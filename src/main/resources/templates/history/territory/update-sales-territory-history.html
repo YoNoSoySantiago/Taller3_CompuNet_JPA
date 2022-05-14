@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>Update Sales Territory History</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+		integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+	<link rel="stylesheet" href="../css/shards.min.css">
+</head>
+
+<body>
+	<div class="container my-5">
+		<h2 class="mb-5">Edit Sales Territory History</h2>
+		<div class="row">
+			<div class="col-md-6">
+				<form action="#" th:action="@{/sales_territories_history/edit/{id}(id=${salesterritoryhistory.id})}" th:object="${salesterritoryhistory}"
+					method="post">
+					<div class="row">
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="salesPersonTerritoryHistory" class="col-form-label">Sales Person ID</label>
+								<select id="salesPersonTerritoryHistory" class="form-control-range" th:field="*{salesPersonTerritoryHistory}">
+									<option th:each="sales_person : ${sales_persons}" 
+										th:value="${sales_person.businessentityid}" class="form-control" 
+										th:text="${sales_person.businessentityid}"
+										th:selected="${salesterritoryhistory.salesPersonTerritoryHistory=sales_person}">
+									</option>
+								</select>
+							</div>
+							<div class="form-group col-md-6">
+								<label for="salesTerritory" class="col-form-label">Sales Territory ID</label>
+								<select id="salesTerritory" class="form-control-range" th:field="*{salesTerritory}">
+									<option th:each="sales_territory : ${sales_territories}"
+										th:value="${sales_territory.territoryid}" class="form-control"
+										th:text="${sales_territory.territoryid}"
+										th:selected="${salesterritoryhistory.salesTerritory=sales_territory}">
+									</option>
+								</select>
+							</div>
+							<div class="form-group col-md-6">
+								<label for="StartDate" class="col-form-label">Start Date</label>
+								<input type="datetime-local" name="StartDate" class="form-control" id="StartDate" value="${salesterritoryhistory.}">
+							</div>
+							<div class="form-group col-md-6">
+								<label for="EndDate" class="col-form-label">End Date</label>
+								<input type="datetime-local" name="EndDate" class="form-control" id="EndDate">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 mt-3">
+							<input type="submit" name="action" class="btn btn-primary" value="Update">
+						</div>
+						<div class="col-md-3 mt-3">
+							<input type="reset" class="btn btn-secondary" value="Clear">
+						</div>
+						<div class="col-md-3 mt-3">
+							<input type="submit" name="action" class="btn btn-secondary" value="Cancel">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+
+</html>
