@@ -12,25 +12,25 @@ import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectDoesNotExistEx
 import co.edu.icesi.dev.uccareapp.transport.model.person.Businessentity;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
-import co.edu.icesi.dev.uccareapp.transport.repository.BusinessentityRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryRepository;
+import co.edu.icesi.dev.uccareapp.transport.repository.BusinessentityDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryDao;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesPersonService;
 
 @Service
 public class SalesPersonServiceImp implements SalesPersonService {
 	
-	private SalesPersonRepository salesPersonRepository;
-	private BusinessentityRepository businessentityRepository;
-	private SalesTerritoryRepository salesTerritoryRepository;
+	private SalesPersonDao salesPersonDao;
+	private BusinessentityDao businessentityDao;
+	private SalesTerritoryDao salesTerritoryDao;
 	
 	@Autowired
-	public SalesPersonServiceImp(SalesPersonRepository spr,
-			BusinessentityRepository br,
-			SalesTerritoryRepository str) {
-		this.salesPersonRepository = spr;
-		this.businessentityRepository = br;
-		this.salesTerritoryRepository = str;
+	public SalesPersonServiceImp(SalesPersonDao spr,
+			BusinessentityDao br,
+			SalesTerritoryDao str) {
+		this.salesPersonDao = spr;
+		this.businessentityDao = br;
+		this.salesTerritoryDao = str;
 	}
 
 	@Override
@@ -56,18 +56,18 @@ public class SalesPersonServiceImp implements SalesPersonService {
 				throw new InvalidValueException("commission must to be between 0 and 1");
 			}
 			
-			Optional<Businessentity> entity = businessentityRepository.findById(BusinessId);
+			Optional<Businessentity> entity = businessentityDao.findById(BusinessId);
 			if(entity.isEmpty()) {
 				throw new ObjectDoesNotExistException("This id of businessentity does not exist");
 			}
 			
-			Optional<Salesterritory> territory = salesTerritoryRepository.findById(territoryId);
+			Optional<Salesterritory> territory = salesTerritoryDao.findById(territoryId);
 			if(territory.isEmpty()) {
 				throw new ObjectDoesNotExistException("This id of a Territory does not exist");
 			}
 			salesPerson.setBusinessentityid(BusinessId);
 			salesPerson.setSalesterritory(territory.get());
-			this.salesPersonRepository.save(salesPerson);
+			this.salesPersonDao.save(salesPerson);
 			
 		}else {
 			throw new ObjectAlreadyExistException("this id already exist");
@@ -98,7 +98,7 @@ public class SalesPersonServiceImp implements SalesPersonService {
 			oldPerson.setCommissionpct(salesPerson.getCommissionpct());
 			oldPerson.setSalesquota(salesPerson.getSalesquota());
 			
-			this.salesPersonRepository.save(oldPerson);
+			this.salesPersonDao.save(oldPerson);
 		}else {
 			throw new ObjectDoesNotExistException("this id does not exist");
 		}
@@ -106,23 +106,23 @@ public class SalesPersonServiceImp implements SalesPersonService {
 	
 	@Override
 	public void delete(Salesperson salesperson) {
-		this.salesPersonRepository.delete(salesperson);
+		this.salesPersonDao.delete(salesperson);
 	}
 
 	@Override
 	public Optional<Salesperson> findById(Integer id) {
-		return this.salesPersonRepository.findById(id);
+		return this.salesPersonDao.findById(id);
 	}
 	
 	@Override
 	public Iterable<Salesperson> findAll() {
-		return this.salesPersonRepository.findAll();
+		return this.salesPersonDao.findAll();
 	}
 
 	@Override
 	public void clear() {
 		
-		this.salesPersonRepository.deleteAll();
+		this.salesPersonDao.deleteAll();
 	}
 
 	

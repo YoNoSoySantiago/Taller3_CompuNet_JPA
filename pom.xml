@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>co.edu.icesi.dev.uccareapp.transport.model</groupId>
-	<artifactId>CI-7-taller2-4-HurtadoSolisSantiago</artifactId>
+	<artifactId>CI-7-taller3-4-HurtadoSolisSantiago</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Taller1-SH</name>
 	<description>Demo project for Spring Boot</description>

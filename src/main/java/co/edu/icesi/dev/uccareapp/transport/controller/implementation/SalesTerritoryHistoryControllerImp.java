@@ -21,18 +21,18 @@ import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectAlreadyExistEx
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectDoesNotExistException;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritoryhistory;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryRepository;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryDao;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesTerritoryHistoryService;
 
 @Controller
 public class SalesTerritoryHistoryControllerImp {
 	
 	private SalesTerritoryHistoryService salesTerritoryHistoryService;
-	private SalesPersonRepository salesPersonRepository;
-	private SalesTerritoryRepository salesTerritoryRepository;
+	private SalesPersonDao salesPersonRepository;
+	private SalesTerritoryDao salesTerritoryRepository;
 	
-	public SalesTerritoryHistoryControllerImp(SalesTerritoryHistoryService sths, SalesPersonRepository spr, SalesTerritoryRepository str) {
+	public SalesTerritoryHistoryControllerImp(SalesTerritoryHistoryService sths, SalesPersonDao spr, SalesTerritoryDao str) {
 		this.salesTerritoryHistoryService = sths;
 		this.salesPersonRepository = spr;
 		this.salesTerritoryRepository = str;

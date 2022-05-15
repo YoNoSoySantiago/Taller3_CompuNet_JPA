@@ -18,20 +18,6 @@ public class SalesterritoryhistoryDaoImp implements SalesterritoryhistoryDao{
 
 	@PersistenceContext
 	private EntityManager entityManager;
-	
-	@Override
-	public List<Salesterritoryhistory> findByTerritoryid(Integer id) {
-		String jpql = "SELECT st.salesterritoryhistories FROM Salesterritory st " 
-					+ "WHERE st.territoryid="+id;
-		return 	entityManager.createQuery(jpql).getResultList();	
-	}
-
-	@Override
-	public List<Salesterritoryhistory> findByBusinessentity(Integer id) {
-		String jpql = "SELECT sp.salesterritoryhistories FROM Salesperson sp "
-					+ "WHERE sp.businessentityid="+id;
-		return 	entityManager.createQuery(jpql).getResultList();	
-	}
 
 	@Transactional
 	@Override
@@ -60,5 +46,19 @@ public class SalesterritoryhistoryDaoImp implements SalesterritoryhistoryDao{
 	public List<Salesterritoryhistory> findAll() {
 		String jpql = "Select sth from Salesterritoryhistory sth ";
 		return 	entityManager.createQuery(jpql).getResultList();
+	}
+	
+	@Override
+	public List<Salesterritoryhistory> findByTerritoryid(Integer id) {
+		String jpql = "SELECT st.salesterritoryhistories FROM Salesterritory st " 
+					+ "WHERE st.territoryid="+id;
+		return 	entityManager.createQuery(jpql).getResultList();	
+	}
+
+	@Override
+	public List<Salesterritoryhistory> findByBusinessentity(Integer id) {
+		String jpql = "SELECT sp.salesterritoryhistories FROM Salesperson sp "
+					+ "WHERE sp.businessentityid="+id;
+		return 	entityManager.createQuery(jpql).getResultList();	
 	}
 }

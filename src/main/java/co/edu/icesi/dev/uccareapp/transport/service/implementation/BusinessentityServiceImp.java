@@ -5,35 +5,35 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.BusinessentityDao;
 import co.edu.icesi.dev.uccareapp.transport.model.person.Businessentity;
-import co.edu.icesi.dev.uccareapp.transport.repository.BusinessentityRepository;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.BusinessentityService;
 
 @Service
 public class BusinessentityServiceImp implements BusinessentityService {
 	
-	private BusinessentityRepository businessEntityRepository;
+	private BusinessentityDao businessEntityDao;
 	
 	@Autowired
-	public BusinessentityServiceImp(BusinessentityRepository  ber) {
-		businessEntityRepository = ber;
+	public BusinessentityServiceImp(BusinessentityDao  ber) {
+		businessEntityDao = ber;
 	}
 	@Override
-	public void add(Businessentity businessEntiry) {
-		this.businessEntityRepository.save(businessEntiry);
+	public void add(Businessentity businessEntity) {
+		this.businessEntityDao.add(businessEntity);
 	}
 
 	@Override
 	public Optional<Businessentity> findById(Integer id) {
-		return this.businessEntityRepository.findById(id);
+		return this.businessEntityDao.findById(id);
 	}
 	@Override
 	public Iterable<Businessentity> findAll() {
-		return this.businessEntityRepository.findAll();
+		return this.businessEntityDao.findAll();
 	}
 	@Override
 	public void clear() {
-		this.businessEntityRepository.deleteAll();
+		this.businessEntityDao.deleteAll();
 	}
 
 }

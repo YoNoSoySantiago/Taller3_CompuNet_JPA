@@ -20,16 +20,16 @@ import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectAlreadyExistEx
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectDoesNotExistException;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salespersonquotahistory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritoryhistory;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonRepository;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonDao;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesPersonQuotaHistoryService;
 
 @Controller
 public class SalesPersonQuotaHistoryControllerImp {
 	
 	SalesPersonQuotaHistoryService salesPersonQuotaHistoryService;
-	SalesPersonRepository salesPersonRepository;
+	SalesPersonDao salesPersonRepository;
 	
-	public SalesPersonQuotaHistoryControllerImp(SalesPersonQuotaHistoryService spqhs, SalesPersonRepository spr) {
+	public SalesPersonQuotaHistoryControllerImp(SalesPersonQuotaHistoryService spqhs, SalesPersonDao spr) {
 		this.salesPersonQuotaHistoryService = spqhs;
 		this.salesPersonRepository = spr;
 	}

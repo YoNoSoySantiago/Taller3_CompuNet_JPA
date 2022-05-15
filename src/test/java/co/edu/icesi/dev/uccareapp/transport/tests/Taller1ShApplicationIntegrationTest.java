@@ -26,10 +26,10 @@ import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salespersonquotahistory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritoryhistory;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonQuotaHistoryRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryHistoryRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryRepository;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonQuotaHistoryDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryHistoryDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryDao;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.BusinessentityService;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.CountryRegionService;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesPersonQuotaHistoryService;
@@ -48,10 +48,10 @@ class Taller1ShApplicationIntegrationTest {
 	private SalesTerritoryService salesTerritoryService;
 	private SalesTerritoryHistoryService salesTerritoryHistoryService;
 	
-	private SalesPersonRepository salesPersonRepository;
-	private SalesPersonQuotaHistoryRepository salesPersonQuotaHistoryRepository;
-	private SalesTerritoryRepository salesTerritoryRepository;
-	private SalesTerritoryHistoryRepository salesTerritoryHistoryRepository;
+	private SalesPersonDao salesPersonDao;
+	private SalesPersonQuotaHistoryDao salesPersonQuotaHistoryDao;
+	private SalesTerritoryDao salesTerritoryDao;
+	private SalesTerritoryHistoryDao salesTerritoryHistoryDao;
 	
 	private BusinessentityService businessentityService;
 	private CountryRegionService countryRegionService;
@@ -62,16 +62,16 @@ class Taller1ShApplicationIntegrationTest {
 	@Autowired
 	public Taller1ShApplicationIntegrationTest(SalesPersonService sps,SalesPersonQuotaHistoryService spqs,
 			SalesTerritoryService sts,SalesTerritoryHistoryService sths,BusinessentityService bes,CountryRegionService crs,
-			SalesPersonRepository spr, SalesPersonQuotaHistoryRepository spqhr, SalesTerritoryRepository str, SalesTerritoryHistoryRepository sthr) {
+			SalesPersonDao spr, SalesPersonQuotaHistoryDao spqhr, SalesTerritoryDao str, SalesTerritoryHistoryDao sthr) {
 		this.salesPersonService = sps;
 		this.salesPersonQuotaHistoryService = spqs;
 		this.salesTerritoryService = sts;
 		this.salesTerritoryHistoryService = sths;
 		
-		this.salesPersonRepository =spr;
-		this.salesPersonQuotaHistoryRepository = spqhr;
-		this.salesTerritoryRepository = str;
-		this.salesTerritoryHistoryRepository = sthr;
+		this.salesPersonDao =spr;
+		this.salesPersonQuotaHistoryDao = spqhr;
+		this.salesTerritoryDao = str;
+		this.salesTerritoryHistoryDao = sthr;
 		
 		this.businessentityService = bes;
 		this.countryRegionService = crs;
@@ -119,7 +119,7 @@ class Taller1ShApplicationIntegrationTest {
 			this.salesTerritoryService.add(salesTerritory);
 		});
 		
-		assertTrue(salesTerritoryRepository.findById(1).isEmpty());
+		assertTrue(salesTerritoryDao.findById(1).isEmpty());
 	}
 	
 	@Test
@@ -128,7 +128,7 @@ class Taller1ShApplicationIntegrationTest {
 		Salesterritory salesTerritory = setUpSaveSalesTerritory();
 		this.salesTerritoryService.add(salesTerritory);
 		
-		assertTrue(!salesTerritoryRepository.findById(1).isEmpty());
+		assertTrue(!salesTerritoryDao.findById(1).isEmpty());
 	}
 	
 	@Test
@@ -142,7 +142,7 @@ class Taller1ShApplicationIntegrationTest {
 		assertThrows(ObjectDoesNotExistException.class, ()->{
 			this.salesTerritoryService.edit(salesTerritory);
 		});
-		assertTrue(!salesTerritoryRepository.findById(1).get().getCountryregioncode().equals("ABC"));
+		assertTrue(!salesTerritoryDao.findById(1).get().getCountryregioncode().equals("ABC"));
 	}
 	
 	@Test
@@ -168,7 +168,7 @@ class Taller1ShApplicationIntegrationTest {
 		salesTerritory2.setTerritoryid(1);
 		this.salesTerritoryService.edit(salesTerritory2);
 		
-		Salesterritory territory =  salesTerritoryRepository.findById(1).get();
+		Salesterritory territory =  salesTerritoryDao.findById(1).get();
 		assertTrue(territory.getName().equals("TR-SHS") && territory.getCountryregioncode().equals(countryCodeMexico));
 	}
 	
@@ -194,7 +194,7 @@ class Taller1ShApplicationIntegrationTest {
 		assertThrows(ObjectDoesNotExistException.class, ()->{
 			salesPersonService.add(salesPerson,3,-1);
 		});
-		assertTrue(salesPersonRepository.findById(1).isEmpty());
+		assertTrue(salesPersonDao.findById(1).isEmpty());
 	}
 	
 	@Test
@@ -208,7 +208,7 @@ class Taller1ShApplicationIntegrationTest {
 		assertThrows(ObjectDoesNotExistException.class, ()->{
 			salesPersonService.add(salesPerson,Integer.MAX_VALUE,1);
 		});
-		assertTrue(salesPersonRepository.findById(1).isEmpty());
+		assertTrue(salesPersonDao.findById(1).isEmpty());
 	}
 	
 	@Test
@@ -216,7 +216,7 @@ class Taller1ShApplicationIntegrationTest {
 	void saveSalesPersonTest() throws InvalidValueException, ObjectDoesNotExistException, ObjectAlreadyExistException {
 		Salesperson salesPerson =  setUpSaveSalesPerson();
 		salesPersonService.add(salesPerson,1,1);
-		assertTrue(!salesPersonRepository.findById(1).isEmpty());
+		assertTrue(!salesPersonDao.findById(1).isEmpty());
 	}
 	
 	@Test
@@ -257,7 +257,7 @@ class Taller1ShApplicationIntegrationTest {
 		salesPerson.setBusinessentityid(2);
 		salesPerson.setCommissionpct(new BigDecimal("0.7"));
 		salesPersonService.edit(salesPerson);
-		Optional<Salesperson> opSalesPersonEdited = salesPersonRepository.findById(2);
+		Optional<Salesperson> opSalesPersonEdited = salesPersonDao.findById(2);
 		Salesperson salesPersonEdited = opSalesPersonEdited.get();
 		assertTrue(salesPersonEdited.getCommissionpct().compareTo(new BigDecimal("0.7"))==0);
 	}
@@ -288,7 +288,7 @@ class Taller1ShApplicationIntegrationTest {
 	void saveSalesPersonQuotaHistoryTest() throws InvalidValueException, ObjectAlreadyExistException, ObjectDoesNotExistException {
 		Salespersonquotahistory salesQuota = setUpSaveSalesPersonQuotaHistory();
 		this.salesPersonQuotaHistoryService.add(salesQuota,1);
-		assertTrue(!salesPersonQuotaHistoryRepository.findById(1).isEmpty());
+		assertTrue(!salesPersonQuotaHistoryDao.findById(1).isEmpty());
 	}
 	
 	@Test
@@ -308,7 +308,7 @@ class Taller1ShApplicationIntegrationTest {
 		salesQuota.setId(1);
 		salesQuota.setModifieddate(Timestamp.valueOf(LocalDateTime.now().minusDays(3)));
 		this.salesPersonQuotaHistoryService.edit(salesQuota);
-		Optional<Salespersonquotahistory> opSalesQuotaHistory = salesPersonQuotaHistoryRepository.findById(1);
+		Optional<Salespersonquotahistory> opSalesQuotaHistory = salesPersonQuotaHistoryDao.findById(1);
 		
 		assertTrue(opSalesQuotaHistory.get().getModifieddate().compareTo(Timestamp.valueOf(LocalDateTime.now().minusDays(2)))<0);
 		
@@ -316,7 +316,7 @@ class Taller1ShApplicationIntegrationTest {
 		salesQuota.setId(1);
 		salesQuota.setModifieddate(Timestamp.valueOf(LocalDateTime.now().minusDays(1)));
 		this.salesPersonQuotaHistoryService.edit(salesQuota);
-		opSalesQuotaHistory = salesPersonQuotaHistoryRepository.findById(1);
+		opSalesQuotaHistory = salesPersonQuotaHistoryDao.findById(1);
 		
 		assertTrue(opSalesQuotaHistory.get().getModifieddate().compareTo(Timestamp.valueOf(LocalDateTime.now().minusDays(2)))>0);
 	}
@@ -355,7 +355,7 @@ class Taller1ShApplicationIntegrationTest {
 		Salesterritoryhistory salesterritoryhistory = setUpSalesTerritoryHistory();
 		salesTerritoryHistoryService.add(salesterritoryhistory,1, 1);
 		
-		assertTrue(!salesTerritoryHistoryRepository.findById(1).isEmpty());
+		assertTrue(!salesTerritoryHistoryDao.findById(1).isEmpty());
 	}
 	
 
@@ -371,7 +371,7 @@ class Taller1ShApplicationIntegrationTest {
 		salesterritoryhistory.setSalesTerritory(salesTerritoryService.findById(1).get());
 		salesTerritoryHistoryService.edit(salesterritoryhistory);
 		
-		Salesterritoryhistory salesTerritoryHistoryEdited =  salesTerritoryHistoryRepository.findById(1).get();
+		Salesterritoryhistory salesTerritoryHistoryEdited =  salesTerritoryHistoryDao.findById(1).get();
 		
 		assertTrue(salesTerritoryHistoryEdited.getEnddate().compareTo(Timestamp.valueOf(LocalDateTime.now()))<0);
 		assertTrue(salesTerritoryHistoryEdited.getModifieddate().compareTo(Timestamp.valueOf(LocalDateTime.now().minusDays(1)))<0);

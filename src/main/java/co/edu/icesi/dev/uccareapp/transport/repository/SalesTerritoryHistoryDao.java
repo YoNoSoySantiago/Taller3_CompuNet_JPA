@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritoryhistory;
 
-public interface SalesTerritoryHistoryRepository extends CrudRepository<Salesterritoryhistory,Integer> {
+public interface SalesTerritoryHistoryDao extends CrudRepository<Salesterritoryhistory,Integer> {
 
 }

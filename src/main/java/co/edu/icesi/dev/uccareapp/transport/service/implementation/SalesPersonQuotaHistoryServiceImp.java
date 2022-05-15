@@ -14,19 +14,19 @@ import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectDoesNotExistEx
 import co.edu.icesi.dev.uccareapp.transport.model.person.Businessentity;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salespersonquotahistory;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonQuotaHistoryRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonRepository;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonQuotaHistoryDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonDao;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesPersonQuotaHistoryService;
 @Service
 public class SalesPersonQuotaHistoryServiceImp implements SalesPersonQuotaHistoryService {
 	
-	private SalesPersonQuotaHistoryRepository salesPersonQuotaHistoryRepository;
-	private SalesPersonRepository salesPersonRepository;
+	private SalesPersonQuotaHistoryDao salesPersonQuotaHistoryDao;
+	private SalesPersonDao salesPersonDao;
 	
 	@Autowired
-	public SalesPersonQuotaHistoryServiceImp(SalesPersonQuotaHistoryRepository spqhr, SalesPersonRepository spr) {
-		this.salesPersonRepository = spr;
-		this.salesPersonQuotaHistoryRepository = spqhr;
+	public SalesPersonQuotaHistoryServiceImp(SalesPersonQuotaHistoryDao spqhr, SalesPersonDao spr) {
+		this.salesPersonDao = spr;
+		this.salesPersonQuotaHistoryDao = spqhr;
 	}
 
 	@Override
@@ -44,12 +44,12 @@ public class SalesPersonQuotaHistoryServiceImp implements SalesPersonQuotaHistor
 			throw new InvalidValueException("The sales quota must to be a positive number");
 		}
 		
-		Optional<Salesperson> OpSalesPerson = salesPersonRepository.findById(idSalesPerson);
+		Optional<Salesperson> OpSalesPerson = salesPersonDao.findById(idSalesPerson);
 		if(OpSalesPerson.isEmpty()) {
 			throw new ObjectDoesNotExistException("This id of businessentity does not exist");
 		}
 		salesPersonQuotaHistory.setSalesperson(OpSalesPerson.get());
-		this.salesPersonQuotaHistoryRepository.save(salesPersonQuotaHistory);
+		this.salesPersonQuotaHistoryDao.save(salesPersonQuotaHistory);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class SalesPersonQuotaHistoryServiceImp implements SalesPersonQuotaHistor
 			Salespersonquotahistory oldHistory = quotaHistory.get();
 			oldHistory.setModifieddate(salesPersonQuotaHistory.getModifieddate());
 			oldHistory.setSalesquota(salesPersonQuotaHistory.getSalesquota());
-			this.salesPersonQuotaHistoryRepository.save(oldHistory);
+			this.salesPersonQuotaHistoryDao.save(oldHistory);
 		}else {
 			throw new ObjectDoesNotExistException("This id does not exist");
 		}
@@ -81,22 +81,22 @@ public class SalesPersonQuotaHistoryServiceImp implements SalesPersonQuotaHistor
 
 	@Override
 	public Optional<Salespersonquotahistory> findById(Integer id) {
-		return this.salesPersonQuotaHistoryRepository.findById(id);
+		return this.salesPersonQuotaHistoryDao.findById(id);
 	}
 
 	@Override
 	public Iterable<Salespersonquotahistory> findAll() {
-		return this.salesPersonQuotaHistoryRepository.findAll();
+		return this.salesPersonQuotaHistoryDao.findAll();
 	}
 
 	@Override
 	public void clear() {
-		this.salesPersonQuotaHistoryRepository.deleteAll();
+		this.salesPersonQuotaHistoryDao.deleteAll();
 	}
 
 	@Override
 	public void delete(Salespersonquotahistory salespersonquotahistory) {
-		this.salesPersonQuotaHistoryRepository.delete(salespersonquotahistory);
+		this.salesPersonQuotaHistoryDao.delete(salespersonquotahistory);
 	}
 
 }

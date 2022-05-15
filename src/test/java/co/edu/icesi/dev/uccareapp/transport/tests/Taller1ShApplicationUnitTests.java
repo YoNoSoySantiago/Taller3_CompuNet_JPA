@@ -27,12 +27,12 @@ import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salespersonquotahistory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritoryhistory;
-import co.edu.icesi.dev.uccareapp.transport.repository.BusinessentityRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.CountryRegionRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonQuotaHistoryRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryHistoryRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryRepository;
+import co.edu.icesi.dev.uccareapp.transport.repository.BusinessentityDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.CountryRegionDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonQuotaHistoryDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryHistoryDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryDao;
 import co.edu.icesi.dev.uccareapp.transport.service.implementation.SalesPersonQuotaHistoryServiceImp;
 import co.edu.icesi.dev.uccareapp.transport.service.implementation.SalesPersonServiceImp;
 import co.edu.icesi.dev.uccareapp.transport.service.implementation.SalesTerritoryHistoryServiceImp;
@@ -59,17 +59,17 @@ class Taller1ShApplicationUnitTests {
 	private Salesterritory salesTerritory;
 	
 	@Mock
-	private SalesPersonRepository salesPersonRepository;
+	private SalesPersonDao salesPersonDao;
 	@Mock
-	private SalesPersonQuotaHistoryRepository salesPersonQuotaHistoryRepository;
+	private SalesPersonQuotaHistoryDao salesPersonQuotaHistoryDao;
 	@Mock
-	private SalesTerritoryRepository salesTerritoryRepository;
+	private SalesTerritoryDao salesTerritoryDao;
 	@Mock
-	private CountryRegionRepository countryRegionRepository;
+	private CountryRegionDao countryRegionDao;
 	@Mock
-	private SalesTerritoryHistoryRepository salesTerritoryHistoryRepository;
+	private SalesTerritoryHistoryDao salesTerritoryHistoryDao;
 	@Mock
-	private BusinessentityRepository businessentityRepository;
+	private BusinessentityDao businessentityDao;
 	
 
 	void setUpIdValues(){
@@ -78,37 +78,37 @@ class Taller1ShApplicationUnitTests {
 		Optional<Salespersonquotahistory> opPersonHistory = Optional.of(new Salespersonquotahistory());
 		Optional<Salesterritoryhistory> opTerriotyHistory = Optional.of(new Salesterritoryhistory());
 		
-		when(salesPersonRepository.findById(1234)).thenReturn(opPerson);
-		when(salesTerritoryRepository.findById(4321)).thenReturn(opTerritory);
-		when(salesPersonQuotaHistoryRepository.findById(1234)).thenReturn(opPersonHistory);
-		when(salesTerritoryHistoryRepository.findById(1234)).thenReturn(opTerriotyHistory);
+		when(salesPersonDao.findById(1234)).thenReturn(opPerson);
+		when(salesTerritoryDao.findById(4321)).thenReturn(opTerritory);
+		when(salesPersonQuotaHistoryDao.findById(1234)).thenReturn(opPersonHistory);
+		when(salesTerritoryHistoryDao.findById(1234)).thenReturn(opTerriotyHistory);
 	}
 	void setUpEmptyIdValues(){
-		when(salesPersonRepository.findById(1234)).thenReturn(Optional.empty());
-		when(salesTerritoryRepository.findById(4321)).thenReturn(Optional.empty());
-		when(salesPersonQuotaHistoryRepository.findById(1234)).thenReturn(Optional.empty());
-		when(salesTerritoryHistoryRepository.findById(1234)).thenReturn(Optional.empty());
+		when(salesPersonDao.findById(1234)).thenReturn(Optional.empty());
+		when(salesTerritoryDao.findById(4321)).thenReturn(Optional.empty());
+		when(salesPersonQuotaHistoryDao.findById(1234)).thenReturn(Optional.empty());
+		when(salesTerritoryHistoryDao.findById(1234)).thenReturn(Optional.empty());
 	}
 
 	
 	@BeforeEach
 	void loadService() {
-		salesPersonService = new SalesPersonServiceImp(salesPersonRepository,businessentityRepository,salesTerritoryRepository);
-		salesPersonQuotaHistoryService = new SalesPersonQuotaHistoryServiceImp(salesPersonQuotaHistoryRepository,salesPersonRepository);
-		salesTerritoryService = new SalesTerritoryServiceImp(salesTerritoryRepository,countryRegionRepository);
-		salesTerritoryHistoryService = new SalesTerritoryHistoryServiceImp(salesTerritoryHistoryRepository, salesTerritoryRepository,salesPersonRepository);
+		salesPersonService = new SalesPersonServiceImp(salesPersonDao,businessentityDao,salesTerritoryDao);
+		salesPersonQuotaHistoryService = new SalesPersonQuotaHistoryServiceImp(salesPersonQuotaHistoryDao,salesPersonDao);
+		salesTerritoryService = new SalesTerritoryServiceImp(salesTerritoryDao,countryRegionDao);
+		salesTerritoryHistoryService = new SalesTerritoryHistoryServiceImp(salesTerritoryHistoryDao, salesTerritoryDao,salesPersonDao);
 		Optional<Countryregion> opCountry = Optional.of(new Countryregion());
 		Optional<Businessentity> opBusinessEntity = Optional.of(new Businessentity());
-		when(countryRegionRepository.findById("COL")).thenReturn(opCountry);
+		when(countryRegionDao.findById("COL")).thenReturn(opCountry);
 		when(salesTerritory.getName()).thenReturn("TR-SH");
 		when(salesTerritory.getCountryregioncode()).thenReturn("COL");
 		when(salesTerritory.getTerritoryid()).thenReturn(4321);
-		when(businessentityRepository.findById(1234)).thenReturn(opBusinessEntity);
+		when(businessentityDao.findById(1234)).thenReturn(opBusinessEntity);
 	}
 	
 	Salesperson setUpLoadSalesPerson(){
 		Optional<Salesterritory> opTerritory = Optional.of(new Salesterritory());
-		when(salesTerritoryRepository.findById(4321)).thenReturn(opTerritory);
+		when(salesTerritoryDao.findById(4321)).thenReturn(opTerritory);
 		Salesperson person = new Salesperson();
 		person.setBusinessentityid(1234);
 		person.setSalesterritory(salesTerritory);
@@ -303,7 +303,7 @@ class Taller1ShApplicationUnitTests {
 	
 	Salespersonquotahistory setUpSalesQuotaHistory() {
 		Optional<Salesperson> opPerson =  Optional.of(new Salesperson());
-		when(salesPersonRepository.findById(1234)).thenReturn(opPerson);
+		when(salesPersonDao.findById(1234)).thenReturn(opPerson);
 		
 		Salespersonquotahistory salesQuota = new Salespersonquotahistory();
 		salesQuota.setId(1234);
@@ -557,9 +557,9 @@ class Taller1ShApplicationUnitTests {
 	Salesterritoryhistory setUpSalesTerritoryHistory() {
 
 		Optional<Salesterritory> opTerritory = Optional.of(new Salesterritory());
-		when(salesTerritoryRepository.findById(4321)).thenReturn(opTerritory);
+		when(salesTerritoryDao.findById(4321)).thenReturn(opTerritory);
 		Optional<Salesperson> opPerson =  Optional.of(new Salesperson());
-		when(salesPersonRepository.findById(1234)).thenReturn(opPerson);
+		when(salesPersonDao.findById(1234)).thenReturn(opPerson);
 		Salesterritoryhistory salesTerritoryHistory = new Salesterritoryhistory();
 		salesTerritoryHistory.setId(1234);
 		salesTerritoryHistory.setSalesTerritory(salesTerritory);

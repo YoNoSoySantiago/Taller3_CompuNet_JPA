@@ -3,8 +3,8 @@ package co.edu.icesi.dev.uccareapp.transport.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
+import co.edu.icesi.dev.uccareapp.transport.model.person.Countryregion;
 
-public interface SalesPersonRepository extends CrudRepository<Salesperson,Integer> {
+public interface CountryRegionDao extends CrudRepository<Countryregion,String> {
 
 }

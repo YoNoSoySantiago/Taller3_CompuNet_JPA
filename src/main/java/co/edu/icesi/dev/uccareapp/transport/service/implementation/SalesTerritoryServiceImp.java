@@ -9,19 +9,19 @@ import co.edu.icesi.dev.uccareapp.transport.customexeptions.InvalidValueExceptio
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectDoesNotExistException;
 import co.edu.icesi.dev.uccareapp.transport.model.person.Countryregion;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
-import co.edu.icesi.dev.uccareapp.transport.repository.CountryRegionRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryRepository;
+import co.edu.icesi.dev.uccareapp.transport.repository.CountryRegionDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryDao;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesTerritoryService;
 @Service
 public class SalesTerritoryServiceImp implements SalesTerritoryService {
 	
-	private SalesTerritoryRepository salesTerritoryRespository;
-	private CountryRegionRepository countryRegionRegpository;
+	private SalesTerritoryDao salesTerritoryDao;
+	private CountryRegionDao countryRegionDao;
 	
 	@Autowired
-	public SalesTerritoryServiceImp(SalesTerritoryRepository str,CountryRegionRepository crr) {
-		this.salesTerritoryRespository = str;
-		this.countryRegionRegpository = crr;
+	public SalesTerritoryServiceImp(SalesTerritoryDao str,CountryRegionDao crr) {
+		this.salesTerritoryDao = str;
+		this.countryRegionDao = crr;
 	}
 	@Override
 	public void add(Salesterritory salesTerritory) throws InvalidValueException, ObjectDoesNotExistException {
@@ -31,12 +31,12 @@ public class SalesTerritoryServiceImp implements SalesTerritoryService {
 			) {
 			throw new NullPointerException("Values empties or null");
 		}
-		Optional<Countryregion> countryCode = this.countryRegionRegpository.findById(salesTerritory.getCountryregioncode());
+		Optional<Countryregion> countryCode = this.countryRegionDao.findById(salesTerritory.getCountryregioncode());
 		if(!countryCode.isEmpty()) {
 			if(salesTerritory.getName().length()<5) {
 				throw new InvalidValueException("The lenght of the name must to be al least 5");
 			}
-			this.salesTerritoryRespository.save(salesTerritory);
+			this.salesTerritoryDao.save(salesTerritory);
 		}else {
 			throw new ObjectDoesNotExistException("This region code, does not exist");
 		}
@@ -52,7 +52,7 @@ public class SalesTerritoryServiceImp implements SalesTerritoryService {
 				) {
 				throw new NullPointerException("Values empties or null");
 			}
-		Optional<Countryregion> countryCode = this.countryRegionRegpository.findById(salesTerritory.getCountryregioncode());
+		Optional<Countryregion> countryCode = this.countryRegionDao.findById(salesTerritory.getCountryregioncode());
 		if(!countryCode.isEmpty()) {
 			Optional<Salesterritory> optTerritory = findById(salesTerritory.getTerritoryid());
 			if(optTerritory.isEmpty()) {
@@ -64,7 +64,7 @@ public class SalesTerritoryServiceImp implements SalesTerritoryService {
 			Salesterritory oldSalesTerritory = optTerritory.get();
 			oldSalesTerritory.setName(salesTerritory.getName());
 			oldSalesTerritory.setCountryregioncode(salesTerritory.getCountryregioncode());
-			this.salesTerritoryRespository.save(oldSalesTerritory);
+			this.salesTerritoryDao.save(oldSalesTerritory);
 		}else {
 			throw new ObjectDoesNotExistException("This region code, does not exist");
 		}
@@ -72,21 +72,21 @@ public class SalesTerritoryServiceImp implements SalesTerritoryService {
 	
 	@Override
 	public void delete(Salesterritory salesTerritory) {
-		this.salesTerritoryRespository.delete(salesTerritory);
+		this.salesTerritoryDao.delete(salesTerritory);
 	}
 
 	@Override
 	public Optional<Salesterritory> findById(Integer id) {
-		return this.salesTerritoryRespository.findById(id);
+		return this.salesTerritoryDao.findById(id);
 	}
 
 	@Override
 	public Iterable<Salesterritory> findAll() {
-		return this.salesTerritoryRespository.findAll();
+		return this.salesTerritoryDao.findAll();
 	}
 	@Override
 	public void clear() {
-		this.salesTerritoryRespository.deleteAll();
+		this.salesTerritoryDao.deleteAll();
 	}
 
 }

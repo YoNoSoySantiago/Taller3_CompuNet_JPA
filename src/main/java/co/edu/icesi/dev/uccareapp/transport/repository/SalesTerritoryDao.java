@@ -3,8 +3,8 @@ package co.edu.icesi.dev.uccareapp.transport.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import co.edu.icesi.dev.uccareapp.transport.model.person.Businessentity;
+import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
 
-public interface BusinessentityRepository extends CrudRepository<Businessentity,Integer>{
+public interface SalesTerritoryDao extends CrudRepository<Salesterritory, Integer> {
 
 }

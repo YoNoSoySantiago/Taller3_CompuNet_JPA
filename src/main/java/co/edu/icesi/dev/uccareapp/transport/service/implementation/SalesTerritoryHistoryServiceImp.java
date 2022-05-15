@@ -14,21 +14,21 @@ import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectDoesNotExistEx
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritoryhistory;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryHistoryRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryRepository;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryHistoryDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryDao;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesTerritoryHistoryService;
 @Service
 public class SalesTerritoryHistoryServiceImp implements SalesTerritoryHistoryService {
 	
-	private SalesTerritoryHistoryRepository salesTerritoryHistoryRepository;
-	private SalesTerritoryRepository salesTerritoryRepository;
-	private SalesPersonRepository salesPersonRepository;
+	private SalesTerritoryHistoryDao salesTerritoryHistoryDao;
+	private SalesTerritoryDao salesTerritoryDao;
+	private SalesPersonDao salesPersonDao;
 	@Autowired
-	public SalesTerritoryHistoryServiceImp(SalesTerritoryHistoryRepository sthr,SalesTerritoryRepository str,SalesPersonRepository spr) {
-		salesTerritoryHistoryRepository = sthr;
-		salesTerritoryRepository = str;
-		salesPersonRepository = spr;
+	public SalesTerritoryHistoryServiceImp(SalesTerritoryHistoryDao sthr,SalesTerritoryDao str,SalesPersonDao spr) {
+		salesTerritoryHistoryDao = sthr;
+		salesTerritoryDao = str;
+		salesPersonDao = spr;
 	}
 
 	@Override
@@ -42,8 +42,8 @@ public class SalesTerritoryHistoryServiceImp implements SalesTerritoryHistorySer
 				throw new NullPointerException("Values empties or null");
 		}
 		
-		Optional<Salesterritory> opTerritory = this.salesTerritoryRepository.findById(territoryId);
-		Optional<Salesperson> opSalesPerson = this.salesPersonRepository.findById(businessId);
+		Optional<Salesterritory> opTerritory = this.salesTerritoryDao.findById(territoryId);
+		Optional<Salesperson> opSalesPerson = this.salesPersonDao.findById(businessId);
 		
 		if(salesTerritoryHistory.getEnddate().compareTo(Timestamp.valueOf(LocalDateTime.now()))>0) {
 			throw new InvalidValueException("The end date have to be lower than the current date");
@@ -59,7 +59,7 @@ public class SalesTerritoryHistoryServiceImp implements SalesTerritoryHistorySer
 		}
 		salesTerritoryHistory.setSalesPerson(opSalesPerson.get());
 		salesTerritoryHistory.setSalesTerritory(opTerritory.get());
-		this.salesTerritoryHistoryRepository.save(salesTerritoryHistory);
+		this.salesTerritoryHistoryDao.save(salesTerritoryHistory);
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class SalesTerritoryHistoryServiceImp implements SalesTerritoryHistorySer
 				
 					throw new NullPointerException("Values empties or null");
 		}
-		Optional<Salesterritoryhistory> opTerritoryHistory =  this.salesTerritoryHistoryRepository.findById(salesTerritoryHistory.getId());
+		Optional<Salesterritoryhistory> opTerritoryHistory =  this.salesTerritoryHistoryDao.findById(salesTerritoryHistory.getId());
 		
 		if(!opTerritoryHistory.isEmpty()) {
 			if(salesTerritoryHistory.getEnddate().compareTo(Timestamp.valueOf(LocalDateTime.now()))>0) {
@@ -86,7 +86,7 @@ public class SalesTerritoryHistoryServiceImp implements SalesTerritoryHistorySer
 			Salesterritoryhistory oldTerritoryHistory = opTerritoryHistory.get();
 			oldTerritoryHistory.setEnddate(salesTerritoryHistory.getEnddate());
 			oldTerritoryHistory.setStartdate(salesTerritoryHistory.getStartdate());
-			this.salesTerritoryHistoryRepository.save(oldTerritoryHistory);
+			this.salesTerritoryHistoryDao.save(oldTerritoryHistory);
 		}else {
 			throw new ObjectDoesNotExistException("This id does not exist");
 		}
@@ -95,22 +95,22 @@ public class SalesTerritoryHistoryServiceImp implements SalesTerritoryHistorySer
 	@Override
 	public Optional<Salesterritoryhistory> findById(Integer id) {
 		
-		return this.salesTerritoryHistoryRepository.findById(id);
+		return this.salesTerritoryHistoryDao.findById(id);
 	}
 
 	@Override
 	public Iterable<Salesterritoryhistory> findAll() {
-		return this.salesTerritoryHistoryRepository.findAll();
+		return this.salesTerritoryHistoryDao.findAll();
 	}
 
 	@Override
 	public void clear() {
-		this.salesTerritoryHistoryRepository.deleteAll();
+		this.salesTerritoryHistoryDao.deleteAll();
 	}
 
 	@Override
 	public void delete(Salesterritoryhistory salesterritoryhistory) {
-		this.salesTerritoryHistoryRepository.delete(salesterritoryhistory);
+		this.salesTerritoryHistoryDao.delete(salesterritoryhistory);
 	}
 
 

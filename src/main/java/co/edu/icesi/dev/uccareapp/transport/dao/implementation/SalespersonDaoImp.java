@@ -7,6 +7,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -73,17 +76,32 @@ public class SalespersonDaoImp implements SalespersonDao {
 		return 	entityManager.createQuery(jpql).getResultList();
 	}
 	
+	@Override
+	public List<Object[]> xd11() {
+//		SELECT DISTINCT e FROM Employee e INNER JOIN e.tasks t where t.supervisor='Denise
+//		String jpql = "SELECT DISTINCT sp FROM Salesperson as sp "
+//					+ "INNER JOIN SELECT COUNT(sth) FROM Salesterritoryhistory sth "
+//					+ "WHERE sth MENBER OF sp.salesterritoryhistories"
+//					+ "ORDER BY sp.salesquota";
+//		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+//		Root<Salesperson> country = query.from(Salesperson.class);
+//		Expression<Integer> sum = cb.sum(path, param);
+		return 	null;
+	}
+	
+	@Override
 	public List<Salesperson> xd12(Salesterritory salesterritory, Date startDate, Date endDate ){
-		String jpql = "SELECT sp FROM st.salespersons "
+		String jpql = "SELECT sp FROM Salesperson sp "
 					+ "WHERE (SELECT COUNT(sth) FROM Salesterritoryhistory sth "
-					+ "WHERE sth MENBER OF sp.salesterritoryhistories "
+					+ "WHERE sth MEMBER OF sp.salesterritoryhistories "
 					+ "AND sth.startdate>=startDate "
-					+ "AND sth.enddate<=endDate)>0";
+					+ "AND sth.enddate<=endDate)>0 "
+					+ "AND st=sp.salesterritory.territoryid ";
 		Query query = entityManager.createQuery(jpql);	
-		query.setParameter("st", salesterritory);
+		query.setParameter("st", salesterritory.getTerritoryid());
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
-	return 	query.getResultList();
+		return 	query.getResultList();
 	}
 
 	
