@@ -5,8 +5,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.CountryRegionDao;
 import co.edu.icesi.dev.uccareapp.transport.model.person.Countryregion;
-import co.edu.icesi.dev.uccareapp.transport.repository.CountryRegionDao;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.CountryRegionService;
 
 @Service

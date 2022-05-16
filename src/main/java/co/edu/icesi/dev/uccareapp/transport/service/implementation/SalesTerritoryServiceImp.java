@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.InvalidValueException;
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectDoesNotExistException;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.CountryRegionDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesTerritoryDao;
 import co.edu.icesi.dev.uccareapp.transport.model.person.Countryregion;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
-import co.edu.icesi.dev.uccareapp.transport.repository.CountryRegionDao;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryDao;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesTerritoryService;
 @Service
 public class SalesTerritoryServiceImp implements SalesTerritoryService {

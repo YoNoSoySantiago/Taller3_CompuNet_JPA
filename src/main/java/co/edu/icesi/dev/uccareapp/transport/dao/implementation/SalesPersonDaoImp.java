@@ -3,6 +3,7 @@ package co.edu.icesi.dev.uccareapp.transport.dao.implementation;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,13 +16,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalespersonDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesPersonDao;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
 
 @Repository
 @Scope("singleton")
-public class SalespersonDaoImp implements SalespersonDao {
+public class SalesPersonDaoImp implements SalesPersonDao {
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -45,8 +46,8 @@ public class SalespersonDaoImp implements SalespersonDao {
 	}
 
 	@Override
-	public Salesperson findById(Integer id) {
-		return entityManager.find(Salesperson.class, id);
+	public Optional<Salesperson> findById(Integer id) {
+		return Optional.of(entityManager.find(Salesperson.class, id));
 	}
 
 	@Override
@@ -102,6 +103,12 @@ public class SalespersonDaoImp implements SalespersonDao {
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
 		return 	query.getResultList();
+	}
+
+	@Override
+	public void deleteAll() {
+		String jpql = "DELETE FROM Salesperson";
+		entityManager.createQuery(jpql).executeUpdate();
 	}
 
 	

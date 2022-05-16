@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.InvalidValueException;
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectDoesNotExistException;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
-import co.edu.icesi.dev.uccareapp.transport.repository.CountryRegionDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.CountryRegionRepository;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesTerritoryService;
 
 @Controller
 public class SalesTerritoryControllerImp {
 	
 	private SalesTerritoryService salesTerritoryService;
-	private CountryRegionDao countryRegionRepository;
+	private CountryRegionRepository countryRegionRepository;
 	
-	public SalesTerritoryControllerImp(SalesTerritoryService sts,CountryRegionDao crr) {
+	public SalesTerritoryControllerImp(SalesTerritoryService sts,CountryRegionRepository crr) {
 		this.salesTerritoryService = sts;
 		this.countryRegionRepository = crr;
 	}

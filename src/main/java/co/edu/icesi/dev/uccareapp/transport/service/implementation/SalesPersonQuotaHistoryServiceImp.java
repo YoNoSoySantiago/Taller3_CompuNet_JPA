@@ -11,11 +11,10 @@ import org.springframework.stereotype.Service;
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.InvalidValueException;
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectAlreadyExistException;
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectDoesNotExistException;
-import co.edu.icesi.dev.uccareapp.transport.model.person.Businessentity;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesPersonDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesPersonQuotaHistoryDao;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salespersonquotahistory;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonQuotaHistoryDao;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonDao;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesPersonQuotaHistoryService;
 @Service
 public class SalesPersonQuotaHistoryServiceImp implements SalesPersonQuotaHistoryService {

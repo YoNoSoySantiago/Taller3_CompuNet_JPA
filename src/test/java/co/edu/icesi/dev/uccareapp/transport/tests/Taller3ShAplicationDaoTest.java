@@ -23,10 +23,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalespersonDao;
-import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalespersonquotahistoryDao;
-import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesterritoryDao;
-import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesterritoryhistoryDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesPersonDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesPersonQuotaHistoryDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesTerritoryDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesTerritoryHistoryDao;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salespersonquotahistory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
@@ -42,16 +42,16 @@ public class Taller3ShAplicationDaoTest {
 	private EntityManager entityManager;
 	
 	@Autowired
-	private SalespersonDao salesPersonDao;
+	private SalesPersonDao salesPersonDao;
 	
 	@Autowired
-	private SalesterritoryDao salesTerritoryDao;
+	private SalesTerritoryDao salesTerritoryDao;
 	
 	@Autowired 
-	private SalespersonquotahistoryDao salesPersonQuotaHistoryDao;
+	private SalesPersonQuotaHistoryDao salesPersonQuotaHistoryDao;
 	
 	@Autowired
-	private SalesterritoryhistoryDao salesTerritoryHistoryDao;
+	private SalesTerritoryHistoryDao salesTerritoryHistoryDao;
 	
 	private final int n_st = 5;
 	private final int n_sp = 20;
@@ -71,7 +71,7 @@ public class Taller3ShAplicationDaoTest {
 			Salesperson sp = new Salesperson();
 			sp.setCommissionpct(BigDecimal.valueOf(0.1).multiply(BigDecimal.valueOf((i%(n_sp/4)))));
 			sp.setSalesquota(BigDecimal.valueOf((i%(n_sp/4))*1500+7500));
-			sp.setSalesterritory(salesTerritoryDao.findById(i%n_st+1));
+			sp.setSalesterritory(salesTerritoryDao.findById(i%n_st+1).get());
 			sp.setBusinessentityid(i);
 			salesPersonDao.save(sp);
 		}
@@ -79,7 +79,7 @@ public class Taller3ShAplicationDaoTest {
 		for(int i = 1;i<=n_spqh;i++) {
 			Salespersonquotahistory spqh = new Salespersonquotahistory();
 			spqh.setSalesquota(BigDecimal.valueOf(1500*(i%(n_spqh/10))));
-			spqh.setSalesperson(salesPersonDao.findById(i%n_sp+1));
+			spqh.setSalesperson(salesPersonDao.findById(i%n_sp+1).get());
 			spqh.setModifieddate(Timestamp.valueOf(LocalDateTime.now().minusDays(i%10)));
 			//spqh.setId(i);
 			salesPersonQuotaHistoryDao.save(spqh);
@@ -89,8 +89,8 @@ public class Taller3ShAplicationDaoTest {
 			Salesterritoryhistory sth = new Salesterritoryhistory();
 			sth.setStartdate(Timestamp.valueOf(LocalDateTime.now().minusDays(10+i)));
 			sth.setEnddate(Timestamp.valueOf(LocalDateTime.now().minusDays(i)));
-			sth.setSalesTerritory(salesTerritoryDao.findById(i%n_st+1));
-			sth.setSalesPerson(salesPersonDao.findById(i%n_sp+1));
+			sth.setSalesTerritory(salesTerritoryDao.findById(i%n_st+1).get());
+			sth.setSalesPerson(salesPersonDao.findById(i%n_sp+1).get());
 			//sth.setId(i);
 			salesTerritoryHistoryDao.save(sth);
 		}

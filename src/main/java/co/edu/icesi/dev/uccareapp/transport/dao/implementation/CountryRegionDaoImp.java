@@ -21,7 +21,7 @@ public class CountryRegionDaoImp implements CountryRegionDao {
 	
 	@Transactional
 	@Override
-	public void add(Countryregion countryRegion) {
+	public void save(Countryregion countryRegion) {
 		entityManager.persist(countryRegion);
 	}
 
@@ -40,7 +40,7 @@ public class CountryRegionDaoImp implements CountryRegionDao {
 	@Override
 	public void deleteAll() {
 		String jpql = "DELETE FROM Countryregion";
-		entityManager.createQuery(jpql).executeUpdate();;
+		entityManager.createQuery(jpql).executeUpdate();
 	}
 
 

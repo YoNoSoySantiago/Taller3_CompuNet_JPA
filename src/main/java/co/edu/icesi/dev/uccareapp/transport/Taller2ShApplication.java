@@ -15,8 +15,8 @@ import co.edu.icesi.dev.uccareapp.transport.model.person.Businessentity;
 import co.edu.icesi.dev.uccareapp.transport.model.person.Countryregion;
 import co.edu.icesi.dev.uccareapp.transport.model.UserApp;
 import co.edu.icesi.dev.uccareapp.transport.model.UserType;
-import co.edu.icesi.dev.uccareapp.transport.repository.BusinessentityDao;
-import co.edu.icesi.dev.uccareapp.transport.repository.CountryRegionDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.BusinessentityRepository;
+import co.edu.icesi.dev.uccareapp.transport.repository.CountryRegionRepository;
 import co.edu.icesi.dev.uccareapp.transport.repository.UserRepository;
 
 @SpringBootApplication
@@ -32,7 +32,7 @@ public class Taller2ShApplication {
 	}
 
 	@Bean
-	public CommandLineRunner clr(UserRepository userRepository,CountryRegionDao countryRegionRepository,BusinessentityDao businessentityRepository) {
+	public CommandLineRunner clr(UserRepository userRepository,CountryRegionRepository countryRegionRepository,BusinessentityRepository businessentityRepository) {
 		return (args->{
 			UserApp userAdmin = new UserApp();
 			userAdmin.setUsername("YoNoSoySantiago");

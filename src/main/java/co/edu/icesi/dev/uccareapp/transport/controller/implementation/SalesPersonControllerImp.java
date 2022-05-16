@@ -21,8 +21,8 @@ import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectDoesNotExistEx
 import co.edu.icesi.dev.uccareapp.transport.model.person.Businessentity;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
-import co.edu.icesi.dev.uccareapp.transport.repository.BusinessentityDao;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.BusinessentityRepository;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryRepository;
 import co.edu.icesi.dev.uccareapp.transport.service.implementation.SalesPersonServiceImp;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesPersonService;
 
@@ -30,11 +30,11 @@ import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesPersonServic
 public class SalesPersonControllerImp {
 	
 	private SalesPersonService salesPersonService;
-	private BusinessentityDao businessentityRepository;
-	private SalesTerritoryDao salesTerritoryRepository;
+	private BusinessentityRepository businessentityRepository;
+	private SalesTerritoryRepository salesTerritoryRepository;
 	
 	@Autowired
-	public SalesPersonControllerImp(SalesPersonServiceImp sps,BusinessentityDao br,SalesTerritoryDao str) {
+	public SalesPersonControllerImp(SalesPersonServiceImp sps,BusinessentityRepository br,SalesTerritoryRepository str) {
 		this.salesPersonService = sps;
 		this.businessentityRepository = br;
 		this.salesTerritoryRepository = str;

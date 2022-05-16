@@ -26,10 +26,10 @@ import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salespersonquotahistory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritoryhistory;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonQuotaHistoryDao;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonDao;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryHistoryDao;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryDao;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonQuotaHistoryRepository;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonRepository;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryHistoryRepository;
+import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryRepository;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.BusinessentityService;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.CountryRegionService;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesPersonQuotaHistoryService;
@@ -48,10 +48,10 @@ class Taller1ShApplicationIntegrationTest {
 	private SalesTerritoryService salesTerritoryService;
 	private SalesTerritoryHistoryService salesTerritoryHistoryService;
 	
-	private SalesPersonDao salesPersonDao;
-	private SalesPersonQuotaHistoryDao salesPersonQuotaHistoryDao;
-	private SalesTerritoryDao salesTerritoryDao;
-	private SalesTerritoryHistoryDao salesTerritoryHistoryDao;
+	private SalesPersonRepository salesPersonDao;
+	private SalesPersonQuotaHistoryRepository salesPersonQuotaHistoryDao;
+	private SalesTerritoryRepository salesTerritoryDao;
+	private SalesTerritoryHistoryRepository salesTerritoryHistoryDao;
 	
 	private BusinessentityService businessentityService;
 	private CountryRegionService countryRegionService;
@@ -62,7 +62,7 @@ class Taller1ShApplicationIntegrationTest {
 	@Autowired
 	public Taller1ShApplicationIntegrationTest(SalesPersonService sps,SalesPersonQuotaHistoryService spqs,
 			SalesTerritoryService sts,SalesTerritoryHistoryService sths,BusinessentityService bes,CountryRegionService crs,
-			SalesPersonDao spr, SalesPersonQuotaHistoryDao spqhr, SalesTerritoryDao str, SalesTerritoryHistoryDao sthr) {
+			SalesPersonRepository spr, SalesPersonQuotaHistoryRepository spqhr, SalesTerritoryRepository str, SalesTerritoryHistoryRepository sthr) {
 		this.salesPersonService = sps;
 		this.salesPersonQuotaHistoryService = spqs;
 		this.salesTerritoryService = sts;

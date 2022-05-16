@@ -1,7 +1,6 @@
 package co.edu.icesi.dev.uccareapp.transport.tests;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -21,18 +20,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import co.edu.icesi.dev.uccareapp.transport.Taller2ShApplication;
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.InvalidValueException;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.BusinessentityDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.CountryRegionDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesPersonDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesPersonQuotaHistoryDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesTerritoryDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesTerritoryHistoryDao;
 import co.edu.icesi.dev.uccareapp.transport.model.person.Businessentity;
 import co.edu.icesi.dev.uccareapp.transport.model.person.Countryregion;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salespersonquotahistory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritoryhistory;
-import co.edu.icesi.dev.uccareapp.transport.repository.BusinessentityDao;
-import co.edu.icesi.dev.uccareapp.transport.repository.CountryRegionDao;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonQuotaHistoryDao;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonDao;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryHistoryDao;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryDao;
 import co.edu.icesi.dev.uccareapp.transport.service.implementation.SalesPersonQuotaHistoryServiceImp;
 import co.edu.icesi.dev.uccareapp.transport.service.implementation.SalesPersonServiceImp;
 import co.edu.icesi.dev.uccareapp.transport.service.implementation.SalesTerritoryHistoryServiceImp;

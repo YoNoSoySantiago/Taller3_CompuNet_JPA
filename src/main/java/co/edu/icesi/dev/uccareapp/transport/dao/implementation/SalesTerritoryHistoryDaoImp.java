@@ -1,6 +1,7 @@
 package co.edu.icesi.dev.uccareapp.transport.dao.implementation;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -9,12 +10,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesterritoryhistoryDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesTerritoryHistoryDao;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritoryhistory;
 
 @Repository
 @Scope("singleton")
-public class SalesterritoryhistoryDaoImp implements SalesterritoryhistoryDao{
+public class SalesTerritoryHistoryDaoImp implements SalesTerritoryHistoryDao{
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -38,8 +39,8 @@ public class SalesterritoryhistoryDaoImp implements SalesterritoryhistoryDao{
 	}
 
 	@Override
-	public Salesterritoryhistory findById(Integer id) {
-		return entityManager.find(Salesterritoryhistory.class,id);
+	public Optional<Salesterritoryhistory> findById(Integer id) {
+		return Optional.of(entityManager.find(Salesterritoryhistory.class,id));
 	}
 
 	@Override
@@ -60,5 +61,11 @@ public class SalesterritoryhistoryDaoImp implements SalesterritoryhistoryDao{
 		String jpql = "SELECT sp.salesterritoryhistories FROM Salesperson sp "
 					+ "WHERE sp.businessentityid="+id;
 		return 	entityManager.createQuery(jpql).getResultList();	
+	}
+
+	@Override
+	public void deleteAll() {
+		String jpql = "DELETE FROM Salesterritoryhistory";
+		entityManager.createQuery(jpql).executeUpdate();
 	}
 }

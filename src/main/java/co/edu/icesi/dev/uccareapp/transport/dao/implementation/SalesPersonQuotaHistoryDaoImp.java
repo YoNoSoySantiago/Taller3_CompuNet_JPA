@@ -2,6 +2,7 @@ package co.edu.icesi.dev.uccareapp.transport.dao.implementation;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,12 +11,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalespersonquotahistoryDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesPersonQuotaHistoryDao;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salespersonquotahistory;
 
 @Repository
 @Scope("singleton")
-public class SalespersonquotahistoryDaoImp implements SalespersonquotahistoryDao {
+public class SalesPersonQuotaHistoryDaoImp implements SalesPersonQuotaHistoryDao {
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -39,8 +40,8 @@ public class SalespersonquotahistoryDaoImp implements SalespersonquotahistoryDao
 	}
 
 	@Override
-	public Salespersonquotahistory findById(Integer id) {
-		return entityManager.find(Salespersonquotahistory.class,id);
+	public Optional<Salespersonquotahistory> findById(Integer id) {
+		return Optional.of(entityManager.find(Salespersonquotahistory.class,id));
 	}
 
 	@Override
@@ -61,6 +62,12 @@ public class SalespersonquotahistoryDaoImp implements SalespersonquotahistoryDao
 		String jpql = "SELECT spqh FROM Salespersonquotahistory spqh "
 					+ "WHERE spqh.salesquota="+salesquota;
 		return 	entityManager.createQuery(jpql).getResultList();
+	}
+
+	@Override
+	public void deleteAll() {
+		String jpql = "DELETE FROM Salespersonquotahistory";
+		entityManager.createQuery(jpql).executeUpdate();
 	}
 
 	

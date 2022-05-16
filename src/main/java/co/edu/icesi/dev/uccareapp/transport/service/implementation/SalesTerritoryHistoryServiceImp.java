@@ -1,7 +1,6 @@
 package co.edu.icesi.dev.uccareapp.transport.service.implementation;
 
 import java.sql.Timestamp;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -11,12 +10,12 @@ import org.springframework.stereotype.Service;
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.InvalidValueException;
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectAlreadyExistException;
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectDoesNotExistException;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesPersonDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesTerritoryDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesTerritoryHistoryDao;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritoryhistory;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonDao;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryHistoryDao;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryDao;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesTerritoryHistoryService;
 @Service
 public class SalesTerritoryHistoryServiceImp implements SalesTerritoryHistoryService {
