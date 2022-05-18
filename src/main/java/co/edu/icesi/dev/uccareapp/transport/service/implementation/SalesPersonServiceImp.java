@@ -98,7 +98,7 @@ public class SalesPersonServiceImp implements SalesPersonService {
 			oldPerson.setCommissionpct(salesPerson.getCommissionpct());
 			oldPerson.setSalesquota(salesPerson.getSalesquota());
 			
-			this.salesPersonDao.save(oldPerson);
+			this.salesPersonDao.update(oldPerson);
 		}else {
 			throw new ObjectDoesNotExistException("this id does not exist");
 		}

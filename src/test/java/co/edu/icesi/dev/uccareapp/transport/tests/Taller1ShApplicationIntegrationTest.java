@@ -8,10 +8,10 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,16 +20,16 @@ import co.edu.icesi.dev.uccareapp.transport.Taller2ShApplication;
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.InvalidValueException;
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectAlreadyExistException;
 import co.edu.icesi.dev.uccareapp.transport.customexeptions.ObjectDoesNotExistException;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesPersonDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesPersonQuotaHistoryDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesTerritoryDao;
+import co.edu.icesi.dev.uccareapp.transport.dao.interfaces.SalesTerritoryHistoryDao;
 import co.edu.icesi.dev.uccareapp.transport.model.person.Businessentity;
 import co.edu.icesi.dev.uccareapp.transport.model.person.Countryregion;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salespersonquotahistory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritory;
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesterritoryhistory;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonQuotaHistoryRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesPersonRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryHistoryRepository;
-import co.edu.icesi.dev.uccareapp.transport.repository.SalesTerritoryRepository;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.BusinessentityService;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.CountryRegionService;
 import co.edu.icesi.dev.uccareapp.transport.service.interfaces.SalesPersonQuotaHistoryService;
@@ -48,10 +48,10 @@ class Taller1ShApplicationIntegrationTest {
 	private SalesTerritoryService salesTerritoryService;
 	private SalesTerritoryHistoryService salesTerritoryHistoryService;
 	
-	private SalesPersonRepository salesPersonDao;
-	private SalesPersonQuotaHistoryRepository salesPersonQuotaHistoryDao;
-	private SalesTerritoryRepository salesTerritoryDao;
-	private SalesTerritoryHistoryRepository salesTerritoryHistoryDao;
+	private SalesPersonDao salesPersonDao;
+	private SalesPersonQuotaHistoryDao salesPersonQuotaHistoryDao;
+	private SalesTerritoryDao salesTerritoryDao;
+	private SalesTerritoryHistoryDao salesTerritoryHistoryDao;
 	
 	private BusinessentityService businessentityService;
 	private CountryRegionService countryRegionService;
@@ -62,7 +62,7 @@ class Taller1ShApplicationIntegrationTest {
 	@Autowired
 	public Taller1ShApplicationIntegrationTest(SalesPersonService sps,SalesPersonQuotaHistoryService spqs,
 			SalesTerritoryService sts,SalesTerritoryHistoryService sths,BusinessentityService bes,CountryRegionService crs,
-			SalesPersonRepository spr, SalesPersonQuotaHistoryRepository spqhr, SalesTerritoryRepository str, SalesTerritoryHistoryRepository sthr) {
+			SalesPersonDao spr, SalesPersonQuotaHistoryDao spqhr, SalesTerritoryDao str, SalesTerritoryHistoryDao sthr) {
 		this.salesPersonService = sps;
 		this.salesPersonQuotaHistoryService = spqs;
 		this.salesTerritoryService = sts;
@@ -265,7 +265,7 @@ class Taller1ShApplicationIntegrationTest {
 	Salespersonquotahistory setUpSaveSalesPersonQuotaHistory() throws InvalidValueException, ObjectAlreadyExistException, ObjectDoesNotExistException {
 		
 		Salespersonquotahistory salesQuota = new Salespersonquotahistory();
-		salesQuota.setId(1);
+		//salesQuota.setId(1);
 		salesQuota.setModifieddate(Timestamp.valueOf(LocalDateTime.now()));
 		salesQuota.setSalesquota(BigDecimal.ZERO);
 		Salesperson salesperson = salesPersonService.findById(1).get();
@@ -323,7 +323,7 @@ class Taller1ShApplicationIntegrationTest {
 	
 	Salesterritoryhistory setUpSalesTerritoryHistory() {
 		Salesterritoryhistory salesterritoryhistory = new Salesterritoryhistory();
-		salesterritoryhistory.setId(1);
+		//salesterritoryhistory.setId(1);
 		salesterritoryhistory.setModifieddate(Timestamp.valueOf(LocalDateTime.now().minusDays(1)));
 		salesterritoryhistory.setStartdate(Timestamp.valueOf(LocalDateTime.now().minusDays(1)));
 		salesterritoryhistory.setEnddate(Timestamp.valueOf(LocalDateTime.now()));
@@ -369,6 +369,7 @@ class Taller1ShApplicationIntegrationTest {
 		salesterritoryhistory.setStartdate(Timestamp.valueOf(LocalDateTime.now().minusDays(2)));
 		salesterritoryhistory.setSalesPerson(salesPersonService.findById(1).get());
 		salesterritoryhistory.setSalesTerritory(salesTerritoryService.findById(1).get());
+		salesterritoryhistory.setId(1);
 		salesTerritoryHistoryService.edit(salesterritoryhistory);
 		
 		Salesterritoryhistory salesTerritoryHistoryEdited =  salesTerritoryHistoryDao.findById(1).get();

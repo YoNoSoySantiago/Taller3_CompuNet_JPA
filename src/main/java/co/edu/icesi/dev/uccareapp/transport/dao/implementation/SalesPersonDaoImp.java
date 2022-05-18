@@ -1,16 +1,16 @@
 package co.edu.icesi.dev.uccareapp.transport.dao.implementation;
 
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Root;
+import javax.persistence.TypedQuery;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -26,6 +26,10 @@ public class SalesPersonDaoImp implements SalesPersonDao {
 	
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	public SalesPersonDaoImp(EntityManager em) {
+		this.entityManager = em;
+	}
 	
 	@Transactional
 	@Override
@@ -47,13 +51,22 @@ public class SalesPersonDaoImp implements SalesPersonDao {
 
 	@Override
 	public Optional<Salesperson> findById(Integer id) {
-		return Optional.of(entityManager.find(Salesperson.class, id));
+		
+		Salesperson entity = entityManager.find(Salesperson.class, id);
+		if(entity==null) return Optional.empty();
+		return Optional.of(entity);
 	}
 
 	@Override
 	public List<Salesperson> findAll() {
 		String jpql = "Select sp from Salesperson sp";
-		return 	entityManager.createQuery(jpql).getResultList();	
+		return 	entityManager.createQuery(jpql,Salesperson.class).getResultList();	
+	}
+	
+	@Override
+	public void deleteAll() {
+		String jpql = "DELETE FROM Salesperson";
+		entityManager.createQuery(jpql).executeUpdate();
 	}
 	
 	@Override
@@ -67,48 +80,38 @@ public class SalesPersonDaoImp implements SalesPersonDao {
 	public List<Salesperson> findByCommisionPct(BigDecimal commisionpct) {
 		String jpql = "SELECT sp FROM Salesperson sp "
 					+ "WHERE sp.commissionpct="+commisionpct;
-		return 	entityManager.createQuery(jpql).getResultList();	
+		return 	entityManager.createQuery(jpql,Salesperson.class).getResultList();	
 	}
 
 	@Override
 	public List<Salesperson> findBySalesquota(BigDecimal salesquota) {
 		String jpql = "SELECT sp FROM Salesperson sp "
 					+ "WHERE sp.salesquota="+salesquota;
-		return 	entityManager.createQuery(jpql).getResultList();
-	}
-	
-	@Override
-	public List<Object[]> xd11() {
-//		SELECT DISTINCT e FROM Employee e INNER JOIN e.tasks t where t.supervisor='Denise
-//		String jpql = "SELECT DISTINCT sp FROM Salesperson as sp "
-//					+ "INNER JOIN SELECT COUNT(sth) FROM Salesterritoryhistory sth "
-//					+ "WHERE sth MENBER OF sp.salesterritoryhistories"
-//					+ "ORDER BY sp.salesquota";
-//		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-//		Root<Salesperson> country = query.from(Salesperson.class);
-//		Expression<Integer> sum = cb.sum(path, param);
-		return 	null;
-	}
-	
-	@Override
-	public List<Salesperson> xd12(Salesterritory salesterritory, Date startDate, Date endDate ){
-		String jpql = "SELECT sp FROM Salesperson sp "
-					+ "WHERE (SELECT COUNT(sth) FROM Salesterritoryhistory sth "
-					+ "WHERE sth MEMBER OF sp.salesterritoryhistories "
-					+ "AND sth.startdate>=startDate "
-					+ "AND sth.enddate<=endDate)>0 "
-					+ "AND st=sp.salesterritory.territoryid ";
-		Query query = entityManager.createQuery(jpql);	
-		query.setParameter("st", salesterritory.getTerritoryid());
-		query.setParameter("startDate", startDate);
-		query.setParameter("endDate", endDate);
-		return 	query.getResultList();
+		return 	entityManager.createQuery(jpql,Salesperson.class).getResultList();
 	}
 
 	@Override
-	public void deleteAll() {
-		String jpql = "DELETE FROM Salesperson";
-		entityManager.createQuery(jpql).executeUpdate();
+	public Map<Salesperson, Integer> specialQuery(Salesterritory salesterritory, Date startDate, Date endDate) {
+		
+		String jpql = "SELECT sp as salesPerson,(SIZE(sp.salesterritoryhistories)+1) as spCount FROM Salesperson sp, Salesterritoryhistory sthAux "
+					+ "WHERE sthAux MEMBER OF sp.salesterritoryhistories "
+					+ "AND sp.salesterritory.territoryid= :stID "
+					+ "AND sthAux.startdate>= :startdate "
+					+ "AND sthAux.enddate<= :enddate "
+					+ "GROUP BY sp.businessentityid "
+					+ "ORDER BY sp.salesquota";
+		TypedQuery<Object[]> query = entityManager.createQuery(jpql,Object[].class);
+		query.setParameter("stID",salesterritory.getTerritoryid());
+		query.setParameter("startdate", startDate);
+		query.setParameter("enddate", endDate);
+		
+		return query.getResultList().stream()
+				.collect(
+					    Collectors.toMap(
+					        ob -> ((Salesperson) ob[0]),
+					        ob -> ((Integer) ob[1])
+					    )
+					);
 	}
 
 	

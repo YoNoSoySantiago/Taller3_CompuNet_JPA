@@ -19,6 +19,10 @@ public class CountryRegionDaoImp implements CountryRegionDao {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
+	public CountryRegionDaoImp(EntityManager em) {
+		this.entityManager = em;
+	}
+	
 	@Transactional
 	@Override
 	public void save(Countryregion countryRegion) {
@@ -27,8 +31,9 @@ public class CountryRegionDaoImp implements CountryRegionDao {
 
 	@Override
 	public Optional<Countryregion> findById(String coruntryCode) {
-		
-		return Optional.of(entityManager.find(Countryregion.class, coruntryCode));
+		Countryregion entity = entityManager.find(Countryregion.class, coruntryCode);
+		if(entity==null) return Optional.empty();
+		return Optional.of(entity);
 	}
 
 	@Override

@@ -21,6 +21,10 @@ public class SalesPersonQuotaHistoryDaoImp implements SalesPersonQuotaHistoryDao
 	@PersistenceContext
 	private EntityManager entityManager;
 	
+	public SalesPersonQuotaHistoryDaoImp(EntityManager em) {
+		this.entityManager = em;
+	}
+	
 	@Transactional
 	@Override
 	public void save(Salespersonquotahistory entity) {
@@ -41,7 +45,10 @@ public class SalesPersonQuotaHistoryDaoImp implements SalesPersonQuotaHistoryDao
 
 	@Override
 	public Optional<Salespersonquotahistory> findById(Integer id) {
-		return Optional.of(entityManager.find(Salespersonquotahistory.class,id));
+		Salespersonquotahistory entity = entityManager.find(Salespersonquotahistory.class,id);
+		
+		if(entity==null) return Optional.empty();
+		return Optional.of(entity);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,10 @@ public class SalesTerritoryDaoImp implements SalesTerritoryDao {
 	
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	public SalesTerritoryDaoImp(EntityManager em) {
+		this.entityManager = em;
+	}
 	
 	@Transactional
 	@Override
@@ -40,7 +45,10 @@ public class SalesTerritoryDaoImp implements SalesTerritoryDao {
 
 	@Override
 	public Optional<Salesterritory> findById(Integer id) {
-		return Optional.of(entityManager.find(Salesterritory.class,id));
+		Salesterritory entity = entityManager.find(Salesterritory.class,id);
+		
+		if(entity==null) return Optional.empty();
+		return Optional.of(entity);
 	}
 
 	@Override
@@ -50,7 +58,7 @@ public class SalesTerritoryDaoImp implements SalesTerritoryDao {
 	}
 	
 	@Override
-	public List<Salesterritory> findWhenAleastTwoSalesPersonWithSalesquotaHiggerThan10000(){
+	public List<Salesterritory> specialQuery(){
 		String jpql = "SELECT st FROM Salesterritory st "
 					+ "WHERE (SELECT COUNT(sp) FROM Salesperson sp WHERE sp MEMBER OF st.salespersons "
 					+ "AND sp.salesquota>10000)>=2";

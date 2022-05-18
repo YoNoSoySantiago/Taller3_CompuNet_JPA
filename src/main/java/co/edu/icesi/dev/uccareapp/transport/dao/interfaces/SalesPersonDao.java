@@ -3,6 +3,7 @@ package co.edu.icesi.dev.uccareapp.transport.dao.interfaces;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import co.edu.icesi.dev.uccareapp.transport.model.sales.Salesperson;
@@ -18,7 +19,6 @@ public interface SalesPersonDao {
 	public List<Salesperson> findByTerritoryId(Integer id);
 	public List<Salesperson> findByCommisionPct(BigDecimal commisionpct);
 	public List<Salesperson> findBySalesquota(BigDecimal salesquota);
-	public List<Object[]> xd11();
-	public List<Salesperson> xd12(Salesterritory salesterritory, Date startDate, Date endDate);
+	public Map<Salesperson, Integer> specialQuery(Salesterritory salesterritory, Date startDate, Date endDate);
 	public void deleteAll();
 }

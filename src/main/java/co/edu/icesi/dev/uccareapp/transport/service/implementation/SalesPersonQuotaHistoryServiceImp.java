@@ -72,7 +72,7 @@ public class SalesPersonQuotaHistoryServiceImp implements SalesPersonQuotaHistor
 			Salespersonquotahistory oldHistory = quotaHistory.get();
 			oldHistory.setModifieddate(salesPersonQuotaHistory.getModifieddate());
 			oldHistory.setSalesquota(salesPersonQuotaHistory.getSalesquota());
-			this.salesPersonQuotaHistoryDao.save(oldHistory);
+			this.salesPersonQuotaHistoryDao.update(oldHistory);
 		}else {
 			throw new ObjectDoesNotExistException("This id does not exist");
 		}

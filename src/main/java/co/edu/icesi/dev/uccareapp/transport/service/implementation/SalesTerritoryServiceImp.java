@@ -31,6 +31,7 @@ public class SalesTerritoryServiceImp implements SalesTerritoryService {
 			) {
 			throw new NullPointerException("Values empties or null");
 		}
+		
 		Optional<Countryregion> countryCode = this.countryRegionDao.findById(salesTerritory.getCountryregioncode());
 		if(!countryCode.isEmpty()) {
 			if(salesTerritory.getName().length()<5) {
@@ -64,7 +65,7 @@ public class SalesTerritoryServiceImp implements SalesTerritoryService {
 			Salesterritory oldSalesTerritory = optTerritory.get();
 			oldSalesTerritory.setName(salesTerritory.getName());
 			oldSalesTerritory.setCountryregioncode(salesTerritory.getCountryregioncode());
-			this.salesTerritoryDao.save(oldSalesTerritory);
+			this.salesTerritoryDao.update(oldSalesTerritory);
 		}else {
 			throw new ObjectDoesNotExistException("This region code, does not exist");
 		}

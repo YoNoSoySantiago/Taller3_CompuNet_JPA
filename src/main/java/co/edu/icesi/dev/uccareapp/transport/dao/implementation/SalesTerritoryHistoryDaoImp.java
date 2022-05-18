@@ -19,6 +19,10 @@ public class SalesTerritoryHistoryDaoImp implements SalesTerritoryHistoryDao{
 
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	public SalesTerritoryHistoryDaoImp(EntityManager em) {
+		this.entityManager = em;
+	}
 
 	@Transactional
 	@Override
@@ -40,7 +44,10 @@ public class SalesTerritoryHistoryDaoImp implements SalesTerritoryHistoryDao{
 
 	@Override
 	public Optional<Salesterritoryhistory> findById(Integer id) {
-		return Optional.of(entityManager.find(Salesterritoryhistory.class,id));
+		Salesterritoryhistory entity = entityManager.find(Salesterritoryhistory.class,id);
+		
+		if(entity==null) return Optional.empty();
+		return Optional.of(entity);
 	}
 
 	@Override

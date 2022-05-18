@@ -85,7 +85,7 @@ public class SalesTerritoryHistoryServiceImp implements SalesTerritoryHistorySer
 			Salesterritoryhistory oldTerritoryHistory = opTerritoryHistory.get();
 			oldTerritoryHistory.setEnddate(salesTerritoryHistory.getEnddate());
 			oldTerritoryHistory.setStartdate(salesTerritoryHistory.getStartdate());
-			this.salesTerritoryHistoryDao.save(oldTerritoryHistory);
+			this.salesTerritoryHistoryDao.update(oldTerritoryHistory);
 		}else {
 			throw new ObjectDoesNotExistException("This id does not exist");
 		}

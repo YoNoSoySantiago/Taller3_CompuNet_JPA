@@ -11,6 +11,6 @@ public interface SalesTerritoryDao {
 	public void delete(Salesterritory entity);
 	public Optional<Salesterritory> findById(Integer id);
 	public List<Salesterritory> findAll();
-	public List<Salesterritory> findWhenAleastTwoSalesPersonWithSalesquotaHiggerThan10000();
+	public List<Salesterritory> specialQuery();
 	public void deleteAll();
 }

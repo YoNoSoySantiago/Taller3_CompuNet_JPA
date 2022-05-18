@@ -19,6 +19,10 @@ public class BusinessentityDaoImp implements BusinessentityDao {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
+	public BusinessentityDaoImp(EntityManager em) {
+		this.entityManager=em;
+	}
+	
 	@Transactional
 	@Override
 	public void add(Businessentity businessEntiry) {
@@ -27,7 +31,9 @@ public class BusinessentityDaoImp implements BusinessentityDao {
 	
 	@Override
 	public Optional<Businessentity> findById(Integer id) {
-		return Optional.of(entityManager.find(Businessentity.class, id));
+		Businessentity entity = entityManager.find(Businessentity.class, id);
+		if(entity==null) return Optional.empty();
+		return Optional.of(entity);
 	}
 
 	@Override

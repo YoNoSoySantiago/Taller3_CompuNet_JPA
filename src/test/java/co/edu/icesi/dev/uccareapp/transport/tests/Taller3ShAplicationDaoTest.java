@@ -4,13 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -63,14 +68,13 @@ public class Taller3ShAplicationDaoTest {
 	public void saveSetUp() {
 		for(int i = 1;i<=n_st;i++) {
 			Salesterritory st = new Salesterritory();
-			//st.setTerritoryid(i);
 			salesTerritoryDao.save(st);
 		}
 		
 		for(int i = 1;i<=n_sp;i++) {
 			Salesperson sp = new Salesperson();
 			sp.setCommissionpct(BigDecimal.valueOf(0.1).multiply(BigDecimal.valueOf((i%(n_sp/4)))));
-			sp.setSalesquota(BigDecimal.valueOf((i%(n_sp/4))*1500+7500));
+			sp.setSalesquota(BigDecimal.valueOf((i%(n_st))*1500+7500));
 			sp.setSalesterritory(salesTerritoryDao.findById(i%n_st+1).get());
 			sp.setBusinessentityid(i);
 			salesPersonDao.save(sp);
@@ -165,28 +169,51 @@ public class Taller3ShAplicationDaoTest {
 	
 	@Test
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void salesPersonX11() {
-//		List<Object[]> list = salesPersonDao.xd11();
-//		for(Object[] ob : list) {
-//			System.out.println("ID: "+((Salesperson)ob[0]).getBusinessentityid());
-//			System.out.println("Count: "+ob[1]);
-//		}
+	public void salesPersonSpecialQuery() {
+		Salesterritory st = salesTerritoryDao.findById(1).get();
+		Date startdate = Date.valueOf(LocalDate.now().minusDays(50));
+		Date enddate = Date.valueOf(LocalDate.now().minusDays(20));
+		Map<Salesperson,Integer> map = salesPersonDao.specialQuery(st, startdate, enddate);
+		for(Salesperson sp: st.getSalespersons()) {
+			boolean contained = false;
+			for(Salesterritoryhistory sth:sp.getSalesterritoryhistories()) {
+				if(sth.getStartdate().compareTo(startdate)>=0 && sth.getEnddate().compareTo(enddate)<=0) {
+					contained = true;
+					break;
+				}
+			}
+			if(contained) {
+				assertTrue(map.containsKey(sp));
+				assertTrue(sp.getSalesterritoryhistories().size()+1==map.get(sp));
+			}else {
+				assertTrue(!map.containsKey(sp));
+			}
+		}
 	}
 	
 	@Test
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void salesPersonX12() {
-//		Salesterritory st = salesTerritoryDao.findById(1);
-//		Date startDate = Date.valueOf(LocalDate.now().minusDays(15));
-//		Date endDate = Date.valueOf(LocalDate.now());
-//		
-//		salesPersonDao.xd12(st, startDate, endDate);
-	}
-	
-	@Test
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void salesTerritoryFindWhenAleastTwoSalesPersonWithSalesquotaHiggerThan10000() {
+	public void salesTerritorySecialQuery() {
+		Map<Integer,Integer> st_repeats = new HashMap<>();
 		
+		for(int i = 0; i<n_sp;i++) {
+			if(!st_repeats.containsKey(i%n_st+1)) {
+				st_repeats.put(i%n_st+1, 0);
+			}
+			if((i%(n_st))*1500+7500>10000){
+				st_repeats.put(i%n_st+1, st_repeats.get(i%n_st+1)+1);
+			}
+		}
+		List<Salesterritory> listFiltered = salesTerritoryDao.specialQuery();
+		List<Salesterritory> list = salesTerritoryDao.findAll();
+		
+		for(Salesterritory st:list) {
+			if(st_repeats.get(st.getTerritoryid())>=2) {
+				assertTrue(listFiltered.contains(st));
+			}else {
+				assertTrue(!listFiltered.contains(st));
+			}
+		}
 	}
 	
 	@Test
