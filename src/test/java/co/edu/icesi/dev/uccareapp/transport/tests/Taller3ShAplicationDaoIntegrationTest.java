@@ -3,6 +3,7 @@ package co.edu.icesi.dev.uccareapp.transport.tests;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
@@ -12,8 +13,8 @@ import java.time.LocalDateTime;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.hibernate.HibernateException;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -96,59 +97,7 @@ public class Taller3ShAplicationDaoIntegrationTest {
 			salesTerritoryHistoryDao.save(sth);
 		}
 	}
-	
-	@Order(1)
-	@Rollback
-	@Test
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void salesPersonDaoSave() {
-		Salesperson sp = new Salesperson();
-		sp.setBusinessentityid(n_sp+1);
-		sp.setSalesterritory(salesTerritoryDao.findById(1).get());
-		sp.setSalesquota(new BigDecimal("15000"));
-		sp.setCommissionpct(new BigDecimal("0.5"));
-	
-		assertNotNull(salesPersonDao);
-		assertNull(entityManager.find(Salesperson.class, n_sp+1));
-		salesPersonDao.save(sp);
-		assertNotNull(entityManager.find(Salesperson.class, n_sp+1));
-	}
-	@Order(1)
-	@Test
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void salesPersonDaoUpdate() {
-		Salesperson sp = salesPersonDao.findById(1).get();
-		BigDecimal oldSalesquota = sp.getSalesquota();
-		assertTrue(salesPersonDao.findById(1).get().getSalesquota().compareTo(oldSalesquota)==0);
-		
-		BigDecimal newSalesquota = new BigDecimal("99999");
-		sp.setSalesquota(newSalesquota);
-		salesPersonDao.update(sp);
-		assertTrue(salesPersonDao.findById(1).get().getSalesquota().compareTo(oldSalesquota)!=0);
-		assertTrue(salesPersonDao.findById(1).get().getSalesquota().compareTo(newSalesquota)==0);
-		sp.setSalesquota(oldSalesquota);
-		salesPersonDao.update(sp);
-		assertTrue(salesPersonDao.findById(1).get().getSalesquota().compareTo(oldSalesquota)==0);
-		assertTrue(salesPersonDao.findById(1).get().getSalesquota().compareTo(newSalesquota)!=0);
-	}
-	
-	@Order(2)
-	@Test
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void salesPersonDaoDelete() {
-		Salesperson sp = new Salesperson();
-		sp.setBusinessentityid(Integer.MAX_VALUE);
-		sp.setSalesterritory(salesTerritoryDao.findById(1).get());
-		sp.setSalesquota(new BigDecimal("15000"));
-		sp.setCommissionpct(new BigDecimal("0.5"));
-		salesPersonDao.save(sp);
-		
-		assertNotNull(entityManager.find(Salesperson.class,Integer.MAX_VALUE));
-		salesPersonDao.delete(sp);
-		assertNull(entityManager.find(Salesperson.class,Integer.MAX_VALUE));
-	}
-	
-	@Order(2)
+
 	@Test
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void SalesTerritoryDaoSave() {
@@ -159,7 +108,6 @@ public class Taller3ShAplicationDaoIntegrationTest {
 		assertFalse(salesTerritoryDao.findById(n_st+1).isEmpty());
 	}
 	
-	@Order(2)
 	@Test
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void SalesTerritoryDaoUpdate() {
@@ -178,7 +126,7 @@ public class Taller3ShAplicationDaoIntegrationTest {
 		assertFalse(newCountryCode.equals(salesTerritoryDao.findById(1).get().getCountryregioncode()));
 		assertTrue(oldCountryCode.equals(salesTerritoryDao.findById(1).get().getCountryregioncode()));
 	}
-	@Order(3)
+
 	@Test
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void SalesTerritoryDaoDelete() {
@@ -189,4 +137,82 @@ public class Taller3ShAplicationDaoIntegrationTest {
 		assertTrue(salesTerritoryDao.findById(3).isEmpty());
 	}
 	
+	@Test
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void salesPersonDaoSave() {
+		Salesperson sp = new Salesperson();
+		sp.setBusinessentityid(n_sp+1);
+		sp.setSalesterritory(salesTerritoryDao.findById(1).get());
+		sp.setSalesquota(new BigDecimal("15000"));
+		sp.setCommissionpct(new BigDecimal("0.5"));
+	
+		assertNotNull(salesPersonDao);
+		assertNull(entityManager.find(Salesperson.class, n_sp+1));
+		salesPersonDao.save(sp);
+		assertNotNull(entityManager.find(Salesperson.class, n_sp+1));
+	}
+
+	@Test
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void salesPersonDaoUpdate() {
+		Salesperson sp = salesPersonDao.findById(1).get();
+		BigDecimal oldSalesquota = sp.getSalesquota();
+		assertTrue(salesPersonDao.findById(1).get().getSalesquota().compareTo(oldSalesquota)==0);
+		
+		BigDecimal newSalesquota = new BigDecimal("99999");
+		sp.setSalesquota(newSalesquota);
+		salesPersonDao.update(sp);
+		assertTrue(salesPersonDao.findById(1).get().getSalesquota().compareTo(oldSalesquota)!=0);
+		assertTrue(salesPersonDao.findById(1).get().getSalesquota().compareTo(newSalesquota)==0);
+		sp.setSalesquota(oldSalesquota);
+		salesPersonDao.update(sp);
+		assertTrue(salesPersonDao.findById(1).get().getSalesquota().compareTo(oldSalesquota)==0);
+		assertTrue(salesPersonDao.findById(1).get().getSalesquota().compareTo(newSalesquota)!=0);
+	}
+	
+	@Test
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void salesPersonDaoDelete() {
+		Salesperson sp = new Salesperson();
+		sp.setBusinessentityid(Integer.MAX_VALUE);
+		sp.setSalesterritory(salesTerritoryDao.findById(1).get());
+		sp.setSalesquota(new BigDecimal("15000"));
+		sp.setCommissionpct(new BigDecimal("0.5"));
+		salesPersonDao.save(sp);
+		
+		assertNotNull(entityManager.find(Salesperson.class,Integer.MAX_VALUE));
+		salesPersonDao.delete(sp);
+		assertNull(entityManager.find(Salesperson.class,Integer.MAX_VALUE));
+	}
+	
+	@Test
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void SalesTerritoryHistoryDaoSave() {
+		Salesterritoryhistory sth = new Salesterritoryhistory();
+		sth.setStartdate(Timestamp.valueOf(LocalDateTime.now().minusDays(10)));
+		sth.setEnddate(Timestamp.valueOf(LocalDateTime.now().minusDays(0)));
+		sth.setSalesTerritory(salesTerritoryDao.findById(1).get());
+		sth.setSalesPerson(salesPersonDao.findById(1).get());
+		
+		assertTrue(salesTerritoryHistoryDao.findById(n_sth+1).isEmpty());
+		salesTerritoryHistoryDao.save(sth);
+		assertFalse(salesTerritoryHistoryDao.findById(n_sth+1).isEmpty());
+	}
+	
+	@Test
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void SalesTerritoryHistoryDaoUpdate() {
+		Salesterritoryhistory sth = salesTerritoryHistoryDao.findById(1).get();
+		Salesperson sp = sth.getSalesPerson();
+		Salesterritory st = sth.getSalesTerritory();
+		
+		sth.setSalesPerson(salesPersonDao.findById(n_sp).get());
+		sth.setSalesTerritory(salesTerritoryDao.findById(n_st).get());
+	}
+	
+	@Test
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void SalesTerritoryHistoryDaoDelete() {
+		
+	}
 }
